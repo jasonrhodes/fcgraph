@@ -1,0 +1,27 @@
+[
+  {
+    "id": "epl",
+    "name": "Premier League",
+    "country": "BG"
+  },
+  {
+    "id": "liga",
+    "name": "La Liga",
+    "country": "ES"
+  },
+  {
+    "id": "bund",
+    "name": "Bundesliga",
+    "country": "DE"
+  },
+  {
+    "id": "ligue1",
+    "name": "Ligue 1",
+    "country": "FR"
+  },
+  {
+    "id": "sera",
+    "name": "Serie A",
+    "country": "IT"
+  }
+]

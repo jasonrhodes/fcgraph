@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Tottenham Hotspur",
+    "league": "epl"
+  },
+  {
+    "id": 2,
+    "name": "Liverpool",
+    "league": "epl"
+  },
+  {
+    "id": 3,
+    "name": "Barcelona",
+    "league": "liga"
+  },
+  {
+    "id": 4,
+    "name": "Borussia Dortmund",
+    "league": "bund"
+  },
+  {
+    "id": 5,
+    "name": "Paris Saint-Germain",
+    "league": "ligue1"
+  }
+]

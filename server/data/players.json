@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Harry Kane",
+    "country": "GB"
+  },
+  {
+    "id": 2,
+    "name": "Mohamed Salah",
+    "country": "EG"
+  },
+  {
+    "id": 3,
+    "name": "Philippe Coutinho",
+    "country": "BR"
+  },
+  {
+    "id": 4,
+    "name": "Lionel Messi",
+    "country": "AR"
+  },
+  {
+    "id": 5,
+    "name": "Christian Pulisic",
+    "country": "US"
+  },
+  {
+    "id": 6,
+    "name": "Neymar Jr.",
+    "country": "BR"
+  }
+]
