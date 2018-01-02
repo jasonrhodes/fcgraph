@@ -1,51 +1,84 @@
-const countries = require('./data/countries')
-const players = require('./data/players')
-const playersOnClubs = require('./data/playersOnClubs')
-const clubs = require('./data/clubs')
-const leagues = require('./data/leagues')
+const {
+  countries
+} = require('./data')
 
-function getAllClubsForPlayer(playerId) {
-  return playersOnClubs
-    .filter((rel) => rel.player === playerId)
-    .sort((a, b) => new Date(a.start).getTime() > new Date(b.start).getTime())
-    .map((rel) => {
-      const club = clubs.find((club) => club.id === rel.club)
-      club.start = rel.start
-      club.end = rel.end
-      return club
-    })
+const playersModel = require('./models/players')
+const clubsModel = require('./models/clubs')
+const leaguesModel = require('./models/leagues')
+
+const controller = require('./controller')
+
+function getAllClubsForPlayer(playerId) {  
+  return clubsModel.listForPlayer(playerId).then((rels) => {
+    return (rels.length === 0) ? [] : rels
+      .sort((a, b) => new Date(a.startDate).getTime() > new Date(b.startDate).getTime())
+      .map((rel) => {
+        const club = clubs.find((club) => club.id === rel.club)
+        club.rel = rel
+        return club
+      })
+  })
 }
 
 function getCurrentClubForPlayer(playerId) {
-  const club = getAllClubsForPlayer(playerId).pop()
-  club.since = club.start
-  return club
+  const unsigned = { name: 'Unsigned' }
+  return clubsModel.getCurrentForPlayer(playerId).then((club = unsigned) => club)
+}
+
+function slugify(words) {
+  return words.toLowerCase().replace(/[\s_]+/g, '-')
+}
+
+function getSortName({ name, sortName }) {
+  if (sortName) {
+    return sortName.toLowerCase()
+  }
+  const names = name.toLowerCase().split(' ')
+  return `${names[1]} ${names[0]}`
+}
+
+function sortPlayers(players) {
+  return players.sort((a, b) => getSortName(b) < getSortName(a))
 }
 
 module.exports = {
+  Mutation: {
+    addPlayer: controller.addPlayer,
+    addClub: controller.addClub,
+    addLeague: (_, { input }) => (console.log('add league', input), { league: input }),
+    addPlayerToClub: (_, { input }) => (console.log('add player to club', input), { lolidk: 'yeah!' })
+  },
   Query: {
-    players: () => players,
-    clubs: () => clubs,
-    leagues: () => leagues,
-    playersByLeague: (_, { league }) => players.filter((player) => {
-      const club = getCurrentClubForPlayer(player.id)
-      const clubLeague = leagues.find((league) => league.id === club.league)
-      return clubLeague && (clubLeague.id === league || clubLeague.name === league)
-    }),
-    playersByCountry: (_, { country }) => players.filter((player) => player.country === country),
-    player: (_, { name }) => players.find((player) => player.name === name)
+    player: (_, { id }) => playersModel.get(id),
+    players: () => playersModel.list().then((list) => sortPlayers(list)),
+    club: (_, { id }) => clubsModel.get(id),
+    clubs: () => clubsModel.list(),
+    country: (_, { code }) => countries.find((country) => country.code === code),
+    countries: () => countries,
+    league: (_, { id }) => leaguesModel.get(id),
+    leagues: () => leaguesModel.list(),
+    playersByLeague: (_, { leagueId }) => playersModel.listForLeague(leagueId).then((list) => sortPlayers(list)),
+    playersByCountry: (_, { countryCode }) => playersModel.listForCountry(countryCode).then((list) => sortPlayers(list)),
+    playersByClub: (_, { club }) => playersModel.listForCurrentClub(club).then((list) => sortPlayers(list))
   },
   Player: {
     club: (player) => getCurrentClubForPlayer(player.id),
-    clubHistory: (player) => getAllClubsForPlayer(player.id)
+    // clubHistory: (player) => getAllClubsForPlayer(player.id),
+    country: (player) => countries.find((country) => country.code === player.country),
+    imageSrc: (player) => player.imageSrc || `/images/players/${(player.imageSlug || slugify(player.name))}-large.jpg`
   },
   Club: {
-    league: (club) => leagues.find((league) => league.id === club.league)
+    league: (club) => leaguesModel.get(club.league).then((league = { name: 'n/a' }) => league)
+  },
+  League: {
+    country: (league) => countries.find((country) => country.code === league.country)
   },
   PlayerClubsConnection: {
-    edges: (clubs) => clubs
+    edges: (clubs) => clubs.map(({ rel, ...club }) => ({ club, rel }))
   },
   PlayerClubsEdge: {
-    node: ({ id, name, league }) => ({ id, name, league })
+    node: ({ club }) => club,
+    start: ({ rel }) => rel.start,
+    onLoanFrom: ({ rel }) => clubs.find((club) => club.id === rel.onLoanFrom)
   }
 }

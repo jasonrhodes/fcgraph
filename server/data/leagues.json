@@ -23,5 +23,10 @@
     "id": "sera",
     "name": "Serie A",
     "country": "IT"
+  },
+  {
+    "id": "ssl",
+    "name": "Swiss Super League",
+    "country": "CH"
   }
 ]

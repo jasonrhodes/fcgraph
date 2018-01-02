@@ -27,6 +27,13 @@
   {
     "id": 6,
     "name": "Neymar Jr.",
-    "country": "BR"
+    "country": "BR",
+    "imageSlug": "neymar",
+    "sortName": "Neymar"
+  },
+  {
+    "id": 7,
+    "name": "Weston McKennie",
+    "country": "US"
   }
 ]

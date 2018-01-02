@@ -1,0 +1,29 @@
+CREATE TABLE IF NOT EXISTS "clubs" (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+  `name` TEXT NOT NULL,
+  `league` TEXT
+)
+
+CREATE TABLE IF NOT EXISTS "leagues" (
+  `id` TEXT UNIQUE,
+  `name` TEXT,
+  `country` TEXT,
+  PRIMARY KEY(`id`)
+)
+
+CREATE TABLE IF NOT EXISTS "players" (
+  "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+  "name" TEXT NOT NULL,
+  "country" TEXT
+)
+
+CREATE TABLE IF NOT EXISTS "playersOnClubs" (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+  `player` INTEGER NOT NULL DEFAULT 1,
+  `club` INTEGER NOT NULL DEFAULT 1,
+  `start` TEXT NOT NULL,
+  `number` INTEGER,
+  `onLoanFrom` INTEGER,
+  FOREIGN KEY(`player`) REFERENCES `players`(`id`),
+  FOREIGN KEY(`club`) REFERENCES `clubs`(`id`)
+)

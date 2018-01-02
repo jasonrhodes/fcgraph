@@ -23,5 +23,45 @@
     "id": 5,
     "name": "Paris Saint-Germain",
     "league": "ligue1"
+  },
+  {
+    "id": 6,
+    "name": "Manchester City",
+    "league": "epl"
+  },
+  {
+    "id": 7,
+    "name": "Manchester United",
+    "league": "epl"
+  },
+  {
+    "id": 8,
+    "name": "Chelsea",
+    "league": "epl"
+  },
+  {
+    "id": 9,
+    "name": "Schalke 04",
+    "league": "bund"
+  },
+  {
+    "id": 10,
+    "name": "Bayern Munich",
+    "league": "bund"
+  },
+  {
+    "id": 11,
+    "name": "FC Basel",
+    "league": "ssl"
+  },
+  {
+    "id": 12,
+    "name": "Fiorentina",
+    "league": "sera"
+  },
+  {
+    "id": 13,
+    "name": "Roma",
+    "league": "sera"
   }
 ]
